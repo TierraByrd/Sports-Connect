@@ -20,7 +20,7 @@ CREATE TABLE "locations"(
 "zip" INTEGER
 );
 CREATE TABLE "teams" (
-	"id" SERIAL PRIMARY KEY UNIQUE,
+	"id" SERIAL PRIMARY KEY UNIQUE
 	"zip" INTEGER,
 	"sport_id" INTEGER REFERENCES sports(id),
 	"team_name" VARCHAR (100) NOT NULL,
