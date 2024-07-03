@@ -3,7 +3,7 @@ const teamsReducer = (state = {}, action) => {
         case 'SET_TEAMS':
             return action.payload;
             case 'UNSET_TEAMS':
-                return {}
+                return {};
                 default:
                     return state;
     };

@@ -4,7 +4,7 @@ const router = express.Router();
 
 // GET all teams
 router.get('/', (req, res) => {
-    const queryText = 'SELECT * FROM teams';
+    const queryText = 'SELECT * FROM teams ';
     pool.query(queryText)
       .then((result) => res.send(result.rows))
       .catch((err) => {
@@ -12,7 +12,20 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
       });
   });
-  
+  // GET teams by sport_id
+router.get('/sport/:sport_id', (req, res) => {
+  const { sport_id } = req.params;
+  const queryText = `
+    SELECT * FROM teams
+    WHERE sport_id = $1;
+  `;
+  pool.query(queryText, [sport_id])
+    .then((result) => res.send(result.rows))
+    .catch((error) => {
+      console.error('Error getting teams:', error);
+      res.sendStatus(500);
+    });
+});
   // POST new team
   router.post('/', (req, res) => {
     const { zip, sport_id, team_name, location_id } = req.body;

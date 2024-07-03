@@ -23,7 +23,7 @@ import SportsListItem from '../Sports/SportsListItem';
 import SportsList from '../Sports/SportsList';
 import SingleSports from '../Sports/SingleSports';
 import TeamSports from '../Sports/TeamSports';
-import SportDetails from '../SportsDetail';
+import SportsDetail from '../Sports/SportsDetail';
 
 import './App.css';
 
@@ -90,7 +90,7 @@ path="/sports/teamsports"
             exact
             path="/sports/:sport_name"
             >
-              <SportDetails />
+              <SportsDetail />
           </ProtectedRoute>
 
           <ProtectedRoute

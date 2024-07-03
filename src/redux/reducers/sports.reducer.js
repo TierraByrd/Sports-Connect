@@ -3,7 +3,7 @@ const sportsReducer = (state = {}, action) => {
         case 'SET_SPORTS':
             return action.payload;
         case 'UNSET_SPORT':
-            return action.payload;
+            return {};
             default: 
             return state;
             }
