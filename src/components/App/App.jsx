@@ -19,6 +19,11 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import SportsListItem from '../Sports/SportsListItem';
+import SportsList from '../Sports/SportsList';
+import SingleSports from '../Sports/SingleSports';
+import TeamSports from '../Sports/TeamSports';
+import SportsDetail from '../Sports/SportsDetail';
 
 import './App.css';
 
@@ -26,7 +31,7 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector(store => store.user);
-
+  
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
   }, [dispatch]);
@@ -58,6 +63,34 @@ function App() {
             path="/user"
           >
             <UserPage />
+          </ProtectedRoute>
+
+<ProtectedRoute
+exact 
+path="/sports/singlesports"
+>
+  <SingleSports />
+</ProtectedRoute>
+
+<ProtectedRoute
+exact 
+path="/sports/teamsports"
+>
+  <TeamSports />
+</ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/sports"
+            >
+              <SportsList />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/sports/:sport_name"
+            >
+              <SportsDetail />
           </ProtectedRoute>
 
           <ProtectedRoute

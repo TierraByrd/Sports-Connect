@@ -20,35 +20,19 @@ function LandingPage() {
       <div className="grid">
         <div className="grid-col grid-col_8">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            id felis metus. Vestibulum et pulvinar tortor. Morbi pharetra lacus
-            ut ex molestie blandit. Etiam et turpis sit amet risus mollis
-            interdum. Suspendisse et justo vitae metus bibendum fringilla sed
-            sed justo. Aliquam sollicitudin dapibus lectus, vitae consequat odio
-            elementum eget. Praesent efficitur eros vitae nunc interdum, eu
-            interdum justo facilisis. Sed pulvinar nulla ac dignissim efficitur.
-            Quisque eget eros metus. Vestibulum bibendum fringilla nibh a
-            luctus. Duis a sapien metus.
+          Discover the future of youth sports connectivity. 
+          Sports Connect is the dedicated platform for parents to explore, review, and connect with youth sports teams and clubs. 
           </p>
-
+      <h3> Explore, Connect, Review </h3>
           <p>
-            Praesent consectetur orci dui, id elementum eros facilisis id. Sed
-            id dolor in augue porttitor faucibus eget sit amet ante. Nunc
-            consectetur placerat pharetra. Aenean gravida ex ut erat commodo, ut
-            finibus metus facilisis. Nullam eget lectus non urna rhoncus
-            accumsan quis id massa. Curabitur sit amet dolor nisl. Proin
-            euismod, augue at condimentum rhoncus, massa lorem semper lacus, sed
-            lobortis augue mi vel felis. Duis ultrices sapien at est convallis
-            congue.
+          Explore diverse sports options, from team sports like soccer and basketball to individual pursuits like swimming and gymnastics. 
+          Connect with detailed team profiles, including coach information and contact details. Review and share your experiences to help 
+          build a supportive community where transparency thrives.
           </p>
-
+      <h3>Start Your Journey Today</h3>
           <p>
-            Fusce porta diam ac tortor elementum, ut imperdiet metus volutpat.
-            Suspendisse posuere dapibus maximus. Aliquam vitae felis libero. In
-            vehicula sapien at semper ultrices. Vivamus sed feugiat libero. Sed
-            sagittis neque id diam euismod, ut egestas felis ultricies. Nullam
-            non fermentum mauris. Sed in enim ac turpis faucibus pretium in sit
-            amet nisi.
+          Join other parents who trust Sports Connect to navigate the world of youth sports. 
+          Begin exploring now and find the perfect match for your sporting ambitions.
           </p>
         </div>
         <div className="grid-col grid-col_4">
