@@ -19,28 +19,23 @@ router.get('/', (req, res) => {
       });
   });
   // GET teams by sport_name
-router.get(`/${sport_name}/teams`, (req, res) => {
-  const {sport_name} = req.params;
-  const queryText = `
-  SELECT "teams"."id", "teams"."team_name", "teams"."coach_name", "teams"."contact_info", "teams".
-  "current_rating"
-  FROM "teams"
-  JOIN "sports" 
-  ON "teams"."sports.id" = "sports.id"
-  WHERE "sports"."sport_name" = $1;
-  `;
-  
-  const queryValues = [sport_name];
-
-  pool.query(queryText, queryValues)
-    .then((result) => {
-      res.send(result.rows)
-    })
-    .catch(error => {
-      console.error('Error getting teams:', error);
-      res.sendStatus(500);
-    });
-});
+  router.get(`/:id`, (req, res) => {
+    const { id } = req.params;
+    const queryText = `
+      SELECT * FROM "teams"
+      WHERE "sport_name" = $1;
+    `;
+    const queryValues = [id];
+    
+    pool.query(queryText, queryValues)
+      .then((result) => {
+        res.send(result.rows);
+      })
+      .catch(error => {
+        console.error('Error fetching teams:', error);
+        res.sendStatus(500);
+      });
+  });
   // POST new team
   router.post('/', (req, res) => {
     const { zip, sport_id, team_name, location_id } = req.body;

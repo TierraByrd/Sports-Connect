@@ -1,23 +1,24 @@
 import axios from "axios";
 import { put, takeLatest } from "redux-saga/effects";
 
-// Action creators (no need for separate actions.js file)
+
+// Action creators 
 export const fetchTeams = (sport_name) => ({
   type: 'FETCH_TEAMS',
   payload: { sport_name }
 });
 
-const setTeams = (teams) => ({
+export const setTeams = (teams) => ({
   type: 'SET_TEAMS',
   payload: teams
 });
 
-const addTeam = (sport_name, newTeam) => ({
+export const addTeam = (team_name, newTeam) => ({
   type: 'ADD_TEAM',
-  payload: { sport_name, newTeam }
+  payload: { team_name, newTeam }
 });
 
-const setNewTeam = (team) => ({
+export const setNewTeam = (team) => ({
   type: 'SET_NEW_TEAM',
   payload: team
 });
@@ -25,7 +26,7 @@ const setNewTeam = (team) => ({
 function* fetchTeamsSaga(action) {
   const { sport_name } = action.payload;
   try {
-    const teamResponse = yield axios.get(`/api/sports/${sport_name}`);
+    const teamResponse = yield axios.get(`/api/${sport_name}`);
     yield put(setTeams(teamResponse.data));
   } catch (error) {
     console.log('Error fetching teams', error);
@@ -33,11 +34,11 @@ function* fetchTeamsSaga(action) {
 }
 
 function* addTeamSaga(action) {
-  const { sport_name, newTeam } = action.payload;
+  const { team_name, newTeam } = action.payload;
   try {
-    const newTeamResponse = yield axios.post(`/api/sports/${sport_name}`, newTeam);
+    const newTeamResponse = yield axios.post(`/api/teams`, newTeam);
     yield put(setNewTeam(newTeamResponse.data[0]));
-    yield put(fetchTeams({ sport_name })); // Refetch teams after adding new team
+    yield put(fetchTeams({ team_name })); // Refetch teams after adding new team
   } catch (error) {
     console.log('Error adding team', error);
   }

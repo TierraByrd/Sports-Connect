@@ -1,28 +1,28 @@
 import axios from "axios";
 import { put, takeLatest } from "redux-saga/effects";
 
-// Action creators (no need for separate actions.js file)
-const fetchSports = (sport_name) => ({
+// Action types and creators
+export const fetchSports = (sport_name) => ({
   type: 'FETCH_SPORTS',
   payload: { sport_name }
 });
 
-const setSports = (sports) => ({
+export const setSports = (sports) => ({
   type: 'SET_SPORTS',
   payload: sports
 });
 
-const addSport = (sport_name, newSport) => ({
-  type: 'ADD_SPORT',
+export const addSport = (sport_name, newSport) => ({
+  type: 'ADD_Sport',
   payload: { sport_name, newSport }
 });
 
-const setNewSport = (sport) => ({
+export const setNewSport = (sport) => ({
   type: 'SET_NEW_SPORT',
   payload: sport
 });
 
-//worker saga: fetch sports from the server
+// Worker saga: fetch sports from the server
 function* fetchSportsSaga(action) {
   const { sport_name } = action.payload;
   try {
@@ -33,17 +33,19 @@ function* fetchSportsSaga(action) {
   }
 }
 
+// Worker saga: add a new sport
 function* addSportSaga(action) {
   const { sport_name, newSport } = action.payload;
   try {
     const newSportResponse = yield axios.post(`/api/sports`, newSport);
     yield put(setNewSport(newSportResponse.data[0]));
-    yield put(fetchSports({ sport_name })); 
+    yield put(fetchSports(sport_name)); // Note: Use sport_name directly, not { sport_name }
   } catch (error) {
-    console.log('Error adding team', error);
+    console.log('Error adding sport', error);
   }
 }
 
+// Root saga for sports operations
 function* sportsSaga() {
   yield takeLatest('FETCH_SPORTS', fetchSportsSaga);
   yield takeLatest('ADD_SPORTS', addSportSaga);

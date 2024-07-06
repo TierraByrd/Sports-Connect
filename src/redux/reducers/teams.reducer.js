@@ -1,9 +1,9 @@
-const teamsReducer = (state = {}, action) => {
+const teamsReducer = (state = [], action) => {
     switch(action.type){
         case 'SET_TEAMS':
             return action.payload;
-            case 'UNSET_TEAMS':
-                return {};
+        case 'FETCH_TEAMS':
+            return action.payload;
                 default:
                     return state;
     };
