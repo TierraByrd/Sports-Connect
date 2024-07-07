@@ -1,29 +1,30 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { fetchTeams } from "../../redux/sagas/teams.saga";
 
 function TeamsList() {
-  const { sport_name } = useParams();
+  const { sport_name, team_name } = useParams();
   const dispatch = useDispatch();
-  const teams = useSelector(state => state.teamsReducer.teams); // Assuming structure of your state
+  const teamsList = useSelector(state => state.teamsReducer.teams);
 
   useEffect(() => {
-    // Fetch teams for the selected sport
-    dispatch(fetchTeams(sport_name));
-  }, [dispatch, sport_name]);
+      // Fetch teams for the selected sport
+      dispatch(fetchTeams(sport_name));
+  
+  }, [dispatch, sport_name, team_name]);
 
-  if (!teams) {
-    return <div>Loading teams...</div>;
+  if (!teamsList) {
+    return <div>Loading Teams...</div>;
   }
 
   return (
     <div>
       <h2>Teams for {sport_name}</h2>
       <ul>
-        {teams.map(team => (
+        {teamsList.map(team => (
           <li key={team.id}>
-            <Link to={`/${sport_name}/teams/${team.id}`}>{team.name}</Link>
+            <Link to={`/${sport_name}/teams/team_name`}>{team.team_name}</Link>
           </li>
         ))}
       </ul>

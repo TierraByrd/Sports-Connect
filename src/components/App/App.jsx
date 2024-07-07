@@ -103,7 +103,7 @@ path="/sports/teamsports"
 
           <ProtectedRoute
             exact
-            path="/:sport_name/teams/teamId"
+            path="/:sport_name/teams/:team_name"
             >
               <TeamDetails />
           </ProtectedRoute>

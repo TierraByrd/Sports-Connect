@@ -44,7 +44,7 @@ export const deleteTeam = (team_name, teamId) => ({
   payload: { team_name, teamId }
 });
 
-//Worker saga fetch sports from the server
+//Worker saga fetch teams from the server
 function* addTeamSaga(action) {
   const { team_name, newTeam } = action.payload;
   try {

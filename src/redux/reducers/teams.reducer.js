@@ -1,15 +1,17 @@
-// Reducer function
-const teamsReducer = (state = {}, action) => {
-    switch (action.type) {
-      case 'SET_TEAMS':
-      case 'FETCH_TEAMS':
-        return action.payload
-      case 'SET_NEW_TEAM':
-        return {
-          ...state,
-          teams: [...state.teams, action.payload],
-          error: null
-        };
+const initialState = {
+  teams: [], // Initialize as an array to simplify mapping in components
+  teamDetails: null, // Initialize teamDetails as null
+  error: null
+};
+
+const teamsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'SET_TEAMS':
+      return {
+        ...state,
+        teams: action.payload,
+        error: null
+      };
       case 'SET_TEAM_DETAILS':
         return {
           ...state,
