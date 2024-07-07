@@ -23,7 +23,9 @@ import SportsList from '../Sports/SportsList';
 import SingleSports from '../Sports/SingleSports';
 import TeamSports from '../Sports/TeamSports';
 import SportsDetail from '../Sports/SportsDetail';
-import Teams from '../Teams/Teams';
+import TeamsList from '../Teams/TeamsList';
+import TeamDetails from '../Teams/TeamsDetails';
+
 import './App.css';
 
 function App() {
@@ -96,7 +98,14 @@ path="/sports/teamsports"
             exact
             path="/:sport_name/teams"
             >
-              <Teams />
+              <TeamsList />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/:sport_name/teams/teamId"
+            >
+              <TeamDetails />
           </ProtectedRoute>
 
           <ProtectedRoute

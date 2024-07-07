@@ -20,22 +20,32 @@ router.get('/', (req, res) => {
 });
 
 // GET teams by sport_name
-router.get('/api/${sport_name}/teams', (req, res) => {
+router.get('/api/:sport_name/teams', (req, res) => {
   const { sport_name } = req.params;
   const queryText = `
-  SELECT  
-  "teams"."id", "teams"."team_name", "teams"."coach_name", "teams"."contact_info", "teams".
-  "current_rating"
-  FROM "teams"
-  JOIN "sports" 
-  ON "teams"."id" = "sports"."id"
-  WHERE "sports"."sport_name" = $1;
+SELECT 
+    teams.id,
+    teams.sport_id,
+    teams.team_name,
+    sports.id AS sport_id,
+    sports.sport_name,
+    teams.coach_name,
+    teams.contact_info,
+    teams.current_rating
+FROM 
+    teams
+JOIN 
+    sports ON teams.sport_id = sports.id
+WHERE 
+    sports.sport_name = $1;
+  `
+  ;
   const queryValues = [sport_name];
-  `;
+  
 
   pool.query(queryText, queryValues)
     .then((result) => {
-      console.log('Teams for sport:', result.rows);
+      console.log('Teams associated with this sport:', result.rows);
       res.send(result.rows);
     })
     .catch(error => {

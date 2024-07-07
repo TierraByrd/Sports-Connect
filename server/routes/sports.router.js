@@ -52,7 +52,7 @@ router.get('/teamsports', (req, res) => {
     });
 });
 
-// GET sport details by name
+// GET sport details by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   const queryText = `
