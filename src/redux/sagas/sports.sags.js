@@ -13,7 +13,7 @@ export const setSports = (sports) => ({
 });
 
 export const addSport = (sport_name, newSport) => ({
-  type: 'ADD_Sport',
+  type: 'ADD_SPORT',
   payload: { sport_name, newSport }
 });
 
