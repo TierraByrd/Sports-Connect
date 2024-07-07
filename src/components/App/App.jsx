@@ -19,12 +19,11 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
-import SportsListItem from '../Sports/SportsListItem';
 import SportsList from '../Sports/SportsList';
 import SingleSports from '../Sports/SingleSports';
 import TeamSports from '../Sports/TeamSports';
 import SportsDetail from '../Sports/SportsDetail';
-
+import Teams from '../Teams/Teams';
 import './App.css';
 
 function App() {
@@ -91,6 +90,13 @@ path="/sports/teamsports"
             path="/sports/:sport_name"
             >
               <SportsDetail />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/:sport_name/teams"
+            >
+              <Teams />
           </ProtectedRoute>
 
           <ProtectedRoute
