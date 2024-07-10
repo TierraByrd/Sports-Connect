@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
   pool.query(queryText)
     .then((result) => {
       console.log('All sports:', result.rows);
+      comsole.log('GET route for sports works')
       res.send(result.rows);
     })
     .catch(error => {
@@ -53,13 +54,13 @@ router.get('/teamsports', (req, res) => {
 });
 
 // GET sport details by id
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
+router.get('/:sport_name', (req, res) => {
+  const { sport_name } = req.params;
   const queryText = `
     SELECT * FROM "sports" 
     WHERE "sport_name" = $1;
   `;
-  const queryValues = [id];
+  const queryValues = [sport_name];
 
   pool.query(queryText, queryValues)
     .then((result) => {
@@ -88,7 +89,7 @@ router.post('/', (req, res) => {
 
   pool.query(queryText, queryValues)
     .then((result) => {
-      res.status(201).send(result.rows[0]); // Send back newly created sport
+      res.send(result.rows[0]); // Send back newly created sport
     })
     .catch(error => {
       console.error('Error creating sport:', error);
@@ -98,12 +99,12 @@ router.post('/', (req, res) => {
 
 // Update a sport
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
+  const { sportId } = req.params.id;
   const { sport_name, sport_description, sport_type } = req.body;
 
   // Validate input fields
   if (!sport_name || !sport_description || !sport_type) {
-    return res.status(400).send('Missing required fields');
+    return res.status(400);
   }
 
   const queryText = `
@@ -116,7 +117,7 @@ router.put('/:id', (req, res) => {
       "id" = $4
     RETURNING *;
   `;
-  const queryValues = [sport_name, sport_description, sport_type, id];
+  const queryValues = [sport_name, sport_description, sport_type, sportId];
 
   pool.query(queryText, queryValues)
     .then((result) => {
@@ -145,9 +146,9 @@ router.delete('/:id', (req, res) => {
   pool.query(queryText, queryValues)
     .then((result) => {
       if (result.rows.length === 0) {
-        res.sendStatus(404); // Sport not found
+        res.sendStatus(404); 
       } else {
-        res.sendStatus(200); // Successfully deleted
+        res.sendStatus(200); 
       }
     })
     .catch(error => {
