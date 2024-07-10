@@ -6,10 +6,10 @@ function SportsList() {
   return (
     <div>
       <h2>Youth Sports</h2>
-      <Link to='/sports/singlesports'>Solo Sports</Link>
+      <Link to='/singlesports'>Solo Sports</Link>
      <br />
      <br />
-      <Link to='/sports/teamsports'>Team Sports</Link>
+      <Link to='/teamsports'>Team Sports</Link>
      
     </div>
   );

@@ -1,53 +1,125 @@
 const express = require('express');
-const pool = require('../modules/pool');
 const router = express.Router();
+const pool = require('../modules/pool');
 
 // GET all reviews
+
 router.get('/', (req, res) => {
-    const queryText = 'SELECT * FROM reviews';
-    pool.query(queryText)
-      .then((result) => res.send(result.rows))
-      .catch((error) => {
-        console.error('Error getting comments:', error);
-        res.sendStatus(500);
-      });
-  });
-  
-  // POST new review
-  router.post('/', (req, res) => {
-    const { date, team_id, rating, reviews, user_id } = req.body;
-    const queryText = 'INSERT INTO reviews (date, team_id, rating, reviews, user_id) VALUES ($1, $2, $3, $4, $5)';
-    pool.query(queryText, [date, team_id, rating, reviews, user_id])
-      .then(() => res.sendStatus(201))
-      .catch((error) => {
-        console.error('Error adding comment:', error);
-        res.sendStatus(500);
-      });
-  });
-  
-  // PUT update review by ID
-  router.put('/:id', (req, res) => {
-    const reviewId = req.params.id;
-    const { date, team_id, rating, reviewws, user_id } = req.body;
-    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4, user_id = $5 WHERE id = $6';
-    pool.query(queryText, [date, team_id, rating, s, user_id, reviewId])
-      .then(() => res.sendStatus(200))
-      .catch((error) => {
-        console.error('Error updating review:', error);
-        res.sendStatus(500);
-      });
-  });
-  
-  // DELETE review by ID
-  router.delete('/:id', (req, res) => {
-    const reviewId = req.params.id;
-    const queryText = 'DELETE FROM reviews WHERE id = $1';
-    pool.query(queryText, [reviewId])
-      .then(() => res.sendStatus(204))
-      .catch((error) => {
-        console.error('Error deleting review:', error);
-        res.sendStatus(500);
-      });
-  });
+  const queryText = `
+    SELECT * FROM "reviews";
+  `;
+  pool.query(queryText)
+    .then((result) => {
+      console.log('Reviews:', result.rows);
+      res.send(result.rows);
+    })
+    .catch(error => {
+      console.error('Error getting reviews: ', error);
+      res.sendStatus(500);
+    });
+});
+
+// GET review  by id
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  const queryText = `
+    SELECT * FROM "review" 
+    WHERE "sport"."id" = $1;
+  `;
+  const queryValues = [id];
+
+  pool.query(queryText, queryValues)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.sendStatus(404); // No review found
+      } else {
+        console.log('Selected Team Review:', result.rows);
+        res.send(result.rows);
+      }
+    })
+    .catch(error => {
+      console.error('Error getting reviews:', error);
+      res.sendStatus(500);
+    });
+});
+
+// POST a new sport
+router.post('/', (req, res) => {
+  const {rating, comments } = req.body;
+  const queryText = `
+    INSERT INTO "reviews" ("rating", "comments")
+    VALUES ($1, $2)
+    RETURNING *;
+  `;
+  const queryValues = [rating, comments];
+
+  pool.query(queryText, queryValues)
+    .then((result) => {
+      res.send(result.rows) 
+    })
+    .catch(error => {
+      console.error('Error creating sport:', error);
+      res.sendStatus(500);
+    });
+});
+
+// Update a review
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const { rating, comments } = req.body;
+
+  // Validate input fields
+  if (!rating || !comments) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  const queryText = `
+    UPDATE "reviews"
+    SET
+      "rating" = $1,
+      "comments" = $2,
+    WHERE
+      "id" = $3
+    RETURNING *;
+  `;
+  const queryValues = [rating, comments, id];
+
+  pool.query(queryText, queryValues)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.sendStatus(404); // Sport not found
+      } else {
+        res.send(result.rows[0]);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating review:', error);
+      res.sendStatus(500);
+    });
+});
+
+// DELETE a sport
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const queryText = `
+    DELETE FROM "reviews"
+    WHERE "id" = $1
+    RETURNING *;
+  `;
+  const queryValues = [id];
+
+  pool.query(queryText, queryValues)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.sendStatus(404); 
+      } else {
+        res.sendStatus(200); 
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting review:', error);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = router;
