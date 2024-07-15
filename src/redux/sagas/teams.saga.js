@@ -1,114 +1,62 @@
 import axios from "axios";
 import { put, takeLatest } from "redux-saga/effects";
- 
-// Action creators
-export const fetchTeams = (sport_name) => ({
-  type: 'FETCH_TEAMS',
-  payload: { sport_name }
-});
 
-export const setTeams = (teams) => ({
-  type: 'SET_TEAMS',
-  payload: teams
-});
-
-export const fetchTeamDetails = (sport_name, teamId) => ({
-  type: 'FETCH_TEAM_DETAILS',
-  payload: { sport_name, teamId }
-});
-
-export const setTeamDetails = (teamDetails) => ({
-  type: 'SET_TEAM_DETAILS',
-  payload: teamDetails
-});
-
-
-export const addTeam = (team_name, newTeam) => ({
-  type: 'ADD_TEAM',
-  payload: { team_name, newTeam }
-});
-
-export const setNewTeam = (team) => ({
-  type: 'SET_NEW_TEAM',
-  payload: team
-});
-
-
-export const updateTeam = (updatedTeam) => ({
-  type: 'UPDATE_TEAM',
-  payload: {updatedTeam }
-});
-
-export const deleteTeam = (team_name, teamId) => ({
-  type: 'DELETE_TEAM',
-  payload: { team_name, teamId }
-});
-
-//Worker saga fetch teams from the server
-function* addTeamSaga(action) {
-  const { team_name, newTeam } = action.payload;
+// Worker saga: fetch teams
+export function* fetchTeams(action) {
   try {
-    const newTeamResponse = yield axios.post(`/api/${sport_name}/teams`, newTeam);
-    yield put(setNewTeam(newTeamResponse.data[0]));
-    yield put(fetchTeams(team_name)); // Fetch teams after adding a new one
+    const response = yield axios.get("/");
+    yield put({ 
+      type: "FETCH_TEAMS", 
+      payload: response.data });
   } catch (error) {
-    console.error('Error adding team:', error)
+    console.error("Error fetching teams:", error);
   }
 }
-
-// Worker saga: fetch team details
-function* fetchTeamsSaga(action) {
-  const { sport_name } = action.payload;
+// Worker saga: add a team
+export function* addTeam(action) {
   try {
-    const response = yield axios.get(`/api/${sport_name}/teams`);
-    yield put(setTeams(response.data));
+    const response = yield axios.post('/api/teams/NewTeam', action.payload);
+    yield put({
+      type: 'SET_TEAM',
+      payload: response.data
+    });
   } catch (error) {
-    console.error('Error fetching teams:', error);
-  }
-}
-
-function* fetchTeamDetailsSaga(action) {
-  const { sport_name, teamId } = action.payload;
-  try {
-    const response = yield axios.get(`/api/${sport_name}/teams/${teamId}`);
-    yield put(setTeamDetails(response.data));
-  } catch (error) {
-    console.error('Error fetching team details:', error);
+    console.error('Error adding team', error);
   }
 }
 
 // Worker saga: update a team
-function* updateTeamSaga(action) {
-  const { team_name, updatedTeam } = action.payload;
+export function* updateTeam(action) {
   try {
-    const updatedTeamResponse = yield axios.put(`/api/${sport_name}/teams/${updatedTeam.id}`, updatedTeam);
-    yield put(updateTeamSuccess(updatedTeamResponse.data));
-    yield put(fetchTeams(team_name)); // Fetch teams after updating
+    const response = yield axios.put(`/api/teams/${action.payload.updatedTeam.id}`, action.payload);
+    yield put({ 
+      type: 'UPDATE_TEAM',
+      payload: response.data 
+    });
   } catch (error) {
-    yield put(teamError(error));
+    console.error('Error updating team', error);
   }
 }
 
 // Worker saga: delete a team
-function* deleteTeamSaga(action) {
-  const { sport_name, teamId } = action.payload;
+export function* deleteTeam(action) {
   try {
-    yield axios.delete(`/api/${sport_name}/teams/${teamId}`);
-    yield put(deleteTeamSuccess(teamId));
+    const response = yield axios.delete(`/api/teams/${action.payload.deleteTeam.id}`, action.payload);
+    yield put({
+       type: 'DELETE_TEAM', 
+       payload: response.data 
+    });
   } catch (error) {
-    yield put(teamError(error));
+    console.error('Error while deleting team', error);
   }
 }
 
 // Root saga for teams operations
-
 function* teamsSaga() {
-  yield takeLatest('FETCH_TEAMS', fetchTeamsSaga);
-  yield takeLatest('SET_TEAMS', setTeams)
-  yield takeLatest('ADD_TEAM', addTeamSaga);
-  yield takeLatest('FETCH_TEAM_DETAILS', fetchTeamDetailsSaga);
-  yield takeLatest('UPDATE_TEAM', updateTeamSaga);
-  yield takeLatest('DELETE_TEAM', deleteTeamSaga);
+  yield takeLatest('FETCH_TEAMS', fetchTeams);
+  yield takeLatest('ADD_TEAM', addTeam);
+  yield takeLatest('UPDATE_TEAM', updateTeam);
+  yield takeLatest('DELETE_TEAM', deleteTeam);
 }
 
 export default teamsSaga;

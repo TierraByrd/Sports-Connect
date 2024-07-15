@@ -5,13 +5,10 @@ function SportsListItem({ sport }) {
   return (
     <div>
       <h3>{sport.sport_name}</h3>
-      <img src="" alt="" />
-      {/* Additional sport details */}
       <Link to={`/sports/${sport.sport_name}`}>View Details</Link>
-      
     </div>
   );
-
 }
+
 
 export default SportsListItem;

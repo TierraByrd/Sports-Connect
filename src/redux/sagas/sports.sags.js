@@ -1,54 +1,46 @@
 import axios from "axios";
 import { put, takeLatest } from "redux-saga/effects";
 
-// Action types and creators
-export const fetchSports = (sport_name) => ({
-  type: 'FETCH_SPORTS',
-  payload: { sport_name }
-});
-
-export const setSports = (sports) => ({
-  type: 'SET_SPORTS',
-  payload: sports
-});
-
-export const addSport = (sport_name, newSport) => ({
-  type: 'ADD_SPORT',
-  payload: { sport_name, newSport }
-});
-
-export const setNewSport = (sport) => ({
-  type: 'SET_NEW_SPORT',
-  payload: sport
-});
-
-// Worker saga: fetch sports from the server
-function* fetchSportsSaga(action) {
-  const { sport_name } = action.payload;
+// Worker saga: fetch sports
+function* fetchSports (action) {
   try {
-    const sportResponse = yield axios.get(`/api/sports`);
-    yield put(setSports(sportResponse.data));
+    const response = yield axios.get('/api/sports', action.payload);
+    yield put({ 
+      type: 'SET_SPORTS', 
+      payload: response.data 
+    });
   } catch (error) {
-    console.log('Error fetching sports', error);
+    console.error('Error fetching sports:', error);
+  }
+}
+function* fetchSingleSports(action) {
+  try {
+    const response = yield axios.get('/api/sports/single', action.payload);
+    yield put({ 
+      type: 'SET_SINGLE_SPORTS',
+      payload: response.data 
+    })
+  } catch (error) {
+    console.error('Error fetching single sports:', error);
+  }
+}
+function* fetchTeamSports(action) {
+  try{
+    const response = yield axios.get('/api/sports/team', action.payload);
+    yield put({
+      type: 'SET_TEAM_SPORTS',
+      payload: response.data
+    })
+  } catch (error){
+    console.error('Error fetching team sports', error)
   }
 }
 
-// Worker saga: add a new sport
-function* addSportSaga(action) {
-  const { sport_name, newSport } = action.payload;
-  try {
-    const newSportResponse = yield axios.post(`/api/sports`, newSport);
-    yield put(setNewSport(newSportResponse.data[0]));
-    yield put(fetchSports(sport_name)); // Note: Use sport_name directly, not { sport_name }
-  } catch (error) {
-    console.log('Error adding sport', error);
-  }
-}
-
-// Root saga for sports operations
+// Root saga for fetching sports
 function* sportsSaga() {
-  yield takeLatest('FETCH_SPORTS', fetchSportsSaga);
-  yield takeLatest('ADD_SPORTS', addSportSaga);
+  yield takeLatest('FETCH_SPORTS', fetchSports);
+  yield takeLatest('FETCH_SINGLE_SPORTS',fetchSingleSports );
+  yield takeLatest('FETCH_TEAM_SPORTS', fetchTeamSports)
 }
 
 export default sportsSaga;

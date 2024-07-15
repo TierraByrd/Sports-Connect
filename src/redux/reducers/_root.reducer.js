@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
-import sportsReducer from './sports.reducer';
+import sportReducer from './sport.reducer';
 import reviewsReducer from './reviews.reducer';
 import teamsReducer from './teams.reducer';
 
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
   reviewsReducer,
-  sportsReducer,
+  sportReducer,
   teamsReducer,
 });
 
