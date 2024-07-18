@@ -7,12 +7,12 @@ function SingleSports() {
   const singleSports = useSelector(state => state.sportReducer.details);
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_SINGLE_SPORTS' });  // Make sure action type matches your saga
+    dispatch({ type: 'FETCH_SINGLE_SPORTS' });  
   }, [dispatch]);
   
   // Check if singleSports is undefined or empty before mapping
   if (!singleSports || singleSports.length === 0) {
-    return <p>Solo Sports Loading...</p>;  // or any loading indicator
+    return <p>Solo Sports Loading...</p>;  
   }
 
   return (

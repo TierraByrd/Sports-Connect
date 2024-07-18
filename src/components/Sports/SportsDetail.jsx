@@ -1,33 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
-const SportDetails = () => {
-  const { sport_name } = useParams();
-  const [sportDetails, setSportDetails] = useState([]); 
+function SportDetails() {
+  const { sport_type } = useParams();
+  const dispatch = useDispatch();
+  const sportsList = useSelector(state => state.sportReducer.details);
 
-  
   useEffect(() => {
-    axios.get(`/api/sports/${encodeURIComponent(sport_name)}`)
-      .then(response => {
-        setSportDetails(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching sport details:', error);
-      });
-  }, [sport_name]);
+    if (sport_type === 'single') {
+      dispatch({ type: 'FETCH_SINGLE_SPORTS' });
+    } else if (sport_type === 'team') {
+      dispatch({ type: 'FETCH_TEAM_SPORTS' });
+    }
+  }, [dispatch, sport_type]);
 
-  if (!sportDetails) {
-    return <p>Loading sport details...</p>;
+  if (!sportsList || sportsList.length === 0) {
+    return <p>Loading Sport Details...</p>;
+  }
+
+  // Find the sport object in details array that matches sport_type
+  const sport = sportsList.find(sport => sport.sport_name.toLowerCase() === sport_type.toLowerCase());
+
+  if (!sport) {
+    return <p>Sport not found</p>;
   }
 
   return (
     <div>
-      <h2>{sportDetails.sport_name}</h2>
-      <p>{sportDetails.sport_description}</p>
-      <p>Type: {sportDetails.sport_type}</p>
+      <h2>{sport.sport_name}'s Home Page</h2>
+      <p>{sport.sport_description}</p>
+   <br />
+   <br />
+   <br />
+   <Link to='/teams'>Current Teams</Link>
     </div>
   );
-};
+}
 
 export default SportDetails;

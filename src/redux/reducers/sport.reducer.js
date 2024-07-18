@@ -1,6 +1,6 @@
 const initialState = {
-  details: [],  // Initialize as an empty array
-  // Add other initial state properties if needed
+  details: [], 
+  sportDetails: [], 
 };
 
 const sportReducer = (state = initialState, action) => {
@@ -8,15 +8,18 @@ const sportReducer = (state = initialState, action) => {
     case 'SET_SINGLE_SPORTS':
       return {
         ...state,
-        details: action.payload,  // Assuming payload is an array of sports data
+        details: action.payload,  
       };
     case 'SET_TEAM_SPORTS':
       return {
         ...state,
-        details: action.payload,  // Assuming payload is an array of sports data
+        details: action.payload, 
       };
-    // Add more cases for other actions if necessary
-
+      case 'SET_SPORT_DETAILS':
+      return {
+        ...state,
+        sportDetails: action.payload,  
+      };
     default:
       return state;
   }

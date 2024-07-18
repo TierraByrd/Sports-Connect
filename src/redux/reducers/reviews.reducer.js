@@ -1,4 +1,4 @@
-const reviewsReducer = (state = {}, action) => {
+const reviewReducer = (state = {}, action) => {
   switch(action.type) {
     case 'SET_REVIEWS':
       return action.payload;
@@ -12,4 +12,4 @@ const reviewsReducer = (state = {}, action) => {
       return state;
   }
   }
-    export default reviewsReducer;
+    export default reviewReducer;

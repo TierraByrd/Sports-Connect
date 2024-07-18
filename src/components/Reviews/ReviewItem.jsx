@@ -1,11 +1,12 @@
 import React from "react";
 
-function ReviewItem({ review, onEdit, onDelete }) {
+function ReviewItem({review}) {
   return (
     <div>
-      <p>{review.comment} - Rating: {review.rating}</p>
-      <button onClick={onEdit}>Edit</button>
-      <button onClick={onDelete}>Delete</button>
+      <h3>{review.reviewer_name}</h3>
+      <p>Rating: {review.rating}</p>
+      <button onClick={onEdit}>🖋️Edit</button>
+      <button onClick={onDelete}>🗑️ Delete</button>
     </div>
   );
 }

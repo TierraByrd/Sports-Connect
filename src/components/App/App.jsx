@@ -26,7 +26,9 @@ import SportsDetail from '../Sports/SportsDetail';
 import TeamsList from '../Teams/TeamsList';
 import TeamDetails from '../Teams/TeamsDetails';
 import Reviews from '../Reviews/Reviews';
-
+import ReviewList from '../Reviews/ReviewList';
+import ReviewItem from '../Reviews/ReviewItem';
+import ReviewForm from '../Reviews/ReviewForms';
 import './App.css';
 
 function App() {
@@ -88,23 +90,24 @@ path="/sports/team"
               <SportsList />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/sports/:sport_name">
+          <ProtectedRoute exact path="/sports/:sport_type">
             <SportsDetail />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/teamslist"
+            path="/teams"
             >
               <TeamsList />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/teamdetails"
+            path="/teams/:team_name"
             >
               <TeamDetails />
           </ProtectedRoute>
+
 
           <ProtectedRoute
             exact
@@ -112,7 +115,29 @@ path="/sports/team"
             >
               <Reviews />
           </ProtectedRoute>
+    
+          <ProtectedRoute
+            exact
+            path="/reviewform"
+            >
+              <ReviewForm />
+
+          </ProtectedRoute>
+
+              <ProtectedRoute
+            exact
+            path="reviewlist"
+            >
+              <ReviewList />
+          </ProtectedRoute>
           
+          <ProtectedRoute
+            exact
+            path="reviewitem"
+            >
+              <ReviewItem />
+          </ProtectedRoute>
+
           <ProtectedRoute
             // logged in shows InfoPage else shows LoginPage
             exact

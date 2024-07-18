@@ -35,12 +35,26 @@ function* fetchTeamSports(action) {
     console.error('Error fetching team sports', error)
   }
 }
+function* fetchSportDetails(action){
+  try{
+    const sport_type = action.payload;
+    console.log('Sport type:', sport_type)
+    const response = yield axios.get(`/api/sports/${action.payload}`);
+    yield put ({
+      type: 'SET_SPORT_DETAILS',
+      payload: response.data
+    })
+  } catch (error){
+    console.error('Error fetching sport details', error)
+  }
+}
 
 // Root saga for fetching sports
 function* sportsSaga() {
   yield takeLatest('FETCH_SPORTS', fetchSports);
   yield takeLatest('FETCH_SINGLE_SPORTS',fetchSingleSports );
   yield takeLatest('FETCH_TEAM_SPORTS', fetchTeamSports)
+  yield takeLatest('FETCH_SPORT_DETAILS', fetchSportDetails)
 }
 
 export default sportsSaga;

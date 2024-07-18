@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchReviews, addReview, updateReview ,deleteReview } from '../../redux/sagas/reviews.saga';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from 'axios';
 
 function Reviews(){
+  const {team_name} = useParams();
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState([])
 
@@ -12,13 +13,13 @@ function Reviews(){
 
   useEffect(() => {
     axios.get('/api/reviews')
-    .then(response => {
+    .then((response) => {
       setReviews(response.data);
     })
     .catch(error => {
-      console.error('Error GET reviews')
+      console.error('Error GET reviews', error)
     })
-  }, []);
+  }, [dispatch, reviews]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

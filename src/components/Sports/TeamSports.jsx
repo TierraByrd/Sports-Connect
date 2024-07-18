@@ -7,12 +7,12 @@ function TeamSports() {
   const teamSports = useSelector(state => state.sportReducer.details);
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_TEAM_SPORTS' });  // Make sure action type matches your saga
+    dispatch({ type: 'FETCH_TEAM_SPORTS' });  
   }, [dispatch]);
   
   // Check if singleSports is undefined or empty before mapping
   if (!teamSports || teamSports.length === 0) {
-    return <p>Team Sports Loading...</p>;  // or any loading indicator
+    return <p>Team Sports Loading...</p>;  
   }
 
   return (
