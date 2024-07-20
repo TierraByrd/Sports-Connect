@@ -33,7 +33,7 @@ function TeamsList() {
 
   return (
     <div>
-      <h2>Teams for {sport_name}</h2>
+      <h2>Current Teams for {sport_name}</h2>
       <ul>
         {teamsList.map((team) => (
           <li key={team.team_name}>

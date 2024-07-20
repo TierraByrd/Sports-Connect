@@ -25,7 +25,6 @@ import TeamSports from '../Sports/TeamSports';
 import SportsDetail from '../Sports/SportsDetail';
 import TeamsList from '../Teams/TeamsList';
 import TeamDetails from '../Teams/TeamsDetails';
-import Reviews from '../Reviews/Reviews';
 import ReviewList from '../Reviews/ReviewList';
 import ReviewItem from '../Reviews/ReviewItem';
 import ReviewForm from '../Reviews/ReviewForms';
@@ -107,18 +106,10 @@ path="/sports/team"
             >
               <TeamDetails />
           </ProtectedRoute>
-
-
-          <ProtectedRoute
-            exact
-            path="/reviews"
-            >
-              <Reviews />
-          </ProtectedRoute>
     
           <ProtectedRoute
             exact
-            path="/reviewform"
+            path="/reviews"
             >
               <ReviewForm />
 
@@ -126,14 +117,14 @@ path="/sports/team"
 
               <ProtectedRoute
             exact
-            path="reviewlist"
+            path="reviews"
             >
               <ReviewList />
           </ProtectedRoute>
           
           <ProtectedRoute
             exact
-            path="reviewitem"
+            path="reviews"
             >
               <ReviewItem />
           </ProtectedRoute>

@@ -2,9 +2,10 @@ import axios from "axios";
 import { put, takeLatest } from "redux-saga/effects";
 
 // Worker saga: fetch Reviews
-export function* fetchReviews(team_id) {
+function* fetchReviews(action) {
   try {
-    const response = yield axios.get('/api/reviews/:team_id}');
+    const response = yield axios.get(`/api/reviews/${team_name}`);
+    console.log('fetchReviews saga works!', action.payload);
     yield put({ 
       type: 'SET_REVIEWS', 
       payload: response.data 
@@ -15,35 +16,38 @@ export function* fetchReviews(team_id) {
 }
 
 // Worker saga: add review
-export function* addReview(action) {
+function* addReview(action) {
   try {
-    const response = yield axios.post('/api/reviews', action.payload);
+    const response = yield axios.post('/api/reviews');
+    console.log('Add review works!', action.payload)
     yield put({ 
       type: 'ADD_REVIEW',
       payload: response.data 
     });
   } catch (error) {
-    console.error('Error adding review:', error);
+    console.error('Error (Saga) adding review:', error);
   }
 }
 
 // Worker saga: update a review
-export function* updateReview(action) {
+function* updateReview(action) {
   try {
-    const response = yield axios.put('/api/reviews', action.payload);
+    const response = yield axios.put(`/api/reviews/${team_name}`);
+    console.log('Update Saga review works!', action.payload)
     yield put({ 
       type: 'UPDATE_REVIEW', 
       payload: response.data 
     });
   } catch (error) {
-    console.error('Error updating review:', error);
+    console.error('Error Saga updating review:', error);
   }
 }
 
 // Worker saga: delete review
-export function* deleteReview(action) {
+function* deleteReview(action) {
   try {
-    const response = yield axios.delete(`/api/reviews/${action.payload}`);
+    const response = yield axios.delete(`/api/reviews/${team_name}`);
+    console.log('Delete in Saga works!', action.payload)
     yield put({
       type: 'DELETE_REVIEW',
       payload: response.data
