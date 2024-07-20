@@ -1,47 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
 
+function SportDetails() {
+  const { sport_type, sport_name} = useParams();
+  const dispatch = useDispatch();
+  const sportsList = useSelector(state => state.sportReducer.details);
+  const teams = useSelector(state => state.teamReducer.teamDetails);
 
-function SportsDetail() {
-  const { sport_name } = useParams();
-  console.log('The sport name is:', sport_name)
-  const [sportsDetails, setSportsDetails] = useState() 
-  const dispatch = useDispatch()
-  
   useEffect(() => {
-    // Fetch sport details by sport_name
-    axios.get(`/api/sports/${sport_name}`)
-      .then(response => {
-        setSportsDetails(response.data); 
-        dispatch({ type: 'FETCH_SPORTS', payload: response.data }); 
-      })
-      .catch(error => {
-        console.error('Error fetching sport details:', error);
-      });
-  }, [dispatch, sport_name]);
+    // Fetch sports details based on sport_type
+    if (sport_type === 'single') {
+      dispatch({ type: 'FETCH_SINGLE_SPORTS' });
+    } else if (sport_type === 'team') {
+      dispatch({ type: 'FETCH_TEAM_SPORTS' });
+    }
 
-  
-  // Handle rendering while data is loading or if sportsDetails is empty
-  if (!sportsDetails) {
-    return <div>Loading...</div>;
+    // Fetch teams based on team_name
+    if (sport_type) {
+      axios.get(`/api/teams`)
+        .then(response => {
+          dispatch({
+            type: 'SET_TEAMS',
+            payload: response.data,
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching teams:', error);
+        });
+    }
+
+  }, [dispatch, sport_type, sport_name]);
+
+  if (!sportsList || sportsList.length === 0 || !teams) {
+    return <p>Loading Sport Details...</p>;
+  }
+
+  const sport = sportsList.find(sport => sport.sport_name === sport_type);
+
+  if (!sport) {
+    return <p>Sport not found</p>;
   }
 
   return (
     <div>
-      <h2>{sportsDetails[0].sport_name}'s Home Page</h2>
-      <p>{sportsDetails[0].sport_description}</p>
-      <img src="placeholder.jpg" alt={sportsDetails.sport_name} /> {/* Placeholder image */}
-      <div>
-        <p>
-          Current Teams: 
-          <Link to = {`/${sport_name}/teams`}>Click here</Link>
-        </p>
-      </div>
+      <h2>{sport.sport_name}'s Home Page</h2>
+      <p>{sport.sport_description}</p>
+
+      <h3>
+        <Link to={`/teams/${sport.sport_name}`}>Current Teams</Link>
+      </h3>
+
+      {/* Render teams here if needed */}
     </div>
   );
 }
 
-export default SportsDetail;
-
+export default SportDetails;

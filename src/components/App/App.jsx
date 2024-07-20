@@ -25,7 +25,10 @@ import TeamSports from '../Sports/TeamSports';
 import SportsDetail from '../Sports/SportsDetail';
 import TeamsList from '../Teams/TeamsList';
 import TeamDetails from '../Teams/TeamsDetails';
-
+import Reviews from '../Reviews/Reviews';
+import ReviewList from '../Reviews/ReviewList';
+import ReviewItem from '../Reviews/ReviewItem';
+import ReviewForm from '../Reviews/ReviewForms';
 import './App.css';
 
 function App() {
@@ -68,14 +71,14 @@ function App() {
 
 <ProtectedRoute
 exact 
-path="/sports/singlesports"
+path="/sports/single"
 >
   <SingleSports />
 </ProtectedRoute>
 
 <ProtectedRoute
 exact 
-path="/sports/teamsports"
+path="/sports/team"
 >
   <TeamSports />
 </ProtectedRoute>
@@ -87,25 +90,52 @@ path="/sports/teamsports"
               <SportsList />
           </ProtectedRoute>
 
-          <ProtectedRoute
-            exact
-            path="/sports/:sport_name"
-            >
-              <SportsDetail />
+          <ProtectedRoute exact path="/sports/:sport_type">
+            <SportsDetail />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/:sport_name/teams"
+            path="/teams/:sport_name"
             >
               <TeamsList />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/:sport_name/teams/:team_name"
+            path="/:team_name"
             >
               <TeamDetails />
+          </ProtectedRoute>
+
+
+          <ProtectedRoute
+            exact
+            path="/reviews"
+            >
+              <Reviews />
+          </ProtectedRoute>
+    
+          <ProtectedRoute
+            exact
+            path="/reviewform"
+            >
+              <ReviewForm />
+
+          </ProtectedRoute>
+
+              <ProtectedRoute
+            exact
+            path="reviewlist"
+            >
+              <ReviewList />
+          </ProtectedRoute>
+          
+          <ProtectedRoute
+            exact
+            path="reviewitem"
+            >
+              <ReviewItem />
           </ProtectedRoute>
 
           <ProtectedRoute

@@ -11,6 +11,7 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const sportsRouter = require('./routes/sports.router');
 const teamsRouter = require('./routes/teams.router')
+const reviewsRouter = require('./routes/reviews.router')
 // Express Middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -26,7 +27,8 @@ app.use(passport.session());
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/sports', sportsRouter);
-app.use('/api/:sport_name/teams', teamsRouter);
+app.use('/api/teams', teamsRouter);
+app.use('/api/reviews', reviewsRouter)
 // Listen Server & Port
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
