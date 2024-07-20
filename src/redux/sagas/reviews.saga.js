@@ -18,7 +18,7 @@ function* fetchReviews(action) {
 // Worker saga: add review
 function* addReview(action) {
   try {
-    const response = yield axios.post('/api/reviews');
+    const response = yield axios.post(`/api/reviews/${team_name}`);
     console.log('Add review works!', action.payload)
     yield put({ 
       type: 'ADD_REVIEW',

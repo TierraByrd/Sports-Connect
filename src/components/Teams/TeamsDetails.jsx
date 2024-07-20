@@ -34,12 +34,12 @@ function TeamDetails() {
   }, [dispatch, team_name]);
 
   const handleEdit = (reviewId) => {
-    axios.put(`/api/reviews/new`)
+    axios.put(`/api/reviews/${reviewId}`)
       .then((response) => {
         console.log('handleEdit works', response.data)
         dispatch({
           type: 'UPDATE_REVIEW',
-          payload: response.data
+          payload: reviewId
         })
       })
       .catch(error => {

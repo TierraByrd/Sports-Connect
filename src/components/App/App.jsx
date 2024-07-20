@@ -109,7 +109,7 @@ path="/sports/team"
     
           <ProtectedRoute
             exact
-            path="/reviews"
+            path="/reviews/:team_name"
             >
               <ReviewForm />
 
