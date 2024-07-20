@@ -5,16 +5,17 @@ const router = express.Router();
 // GET all sports
 router.get('/', (req, res) => {
   const queryText = `
-    SELECT * FROM "sports"
+    SELECT * 
+    FROM "sports"
     ORDER BY "id" ASC
   `;
   pool.query(queryText)
     .then((result) => {
-      console.log('All sports:', result.rows);
+      console.log('All sports GET route works:', result.rows);
       res.send(result.rows);
     })
     .catch((error) => {
-      console.error('Error getting sports: ', error);
+      console.error('Error in GET for sports: ', error);
       res.sendStatus(500);
     });
 });

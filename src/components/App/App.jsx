@@ -96,14 +96,14 @@ path="/sports/team"
 
           <ProtectedRoute
             exact
-            path="/teams"
+            path="/teams/:sport_name"
             >
               <TeamsList />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/teams/:team_name"
+            path="/:team_name"
             >
               <TeamDetails />
           </ProtectedRoute>

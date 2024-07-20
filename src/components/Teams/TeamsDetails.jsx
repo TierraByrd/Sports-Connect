@@ -1,26 +1,65 @@
-import React, { useEffect} from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReviewForm from "../Reviews/ReviewForms";
 import axios from "axios";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 
 function TeamDetails() {
-  const {team_name} = useParams();
+  const { sport_type, team_name } = useParams(); 
   const dispatch = useDispatch();
-  const teamDetails = useSelector(state => state.teamReducer.details)
+  const teamDetails = useSelector(state => state.teamReducer.teamDetails);
+  const reviews = useSelector(state => state.reviewReducer.reviews);
 
   useEffect(() => {
-    axios.get(`/api/teams/${team_name}`)
-      .then((response) => {
-     dispatch({
-      type: "SET_TEAM_DETAILS",
-      payload: response.data
-     })
+    axios.get(`/api/${team_name}`)
+    .then((response) => {
+   dispatch({
+    type: "SET_TEAM_DETAILS",
+    payload: response.data
+   })
+    })
+    .catch(error => {
+      console.error('Error fetching associated teams:', error);
+    })
+      axios.get(`/api/reviews`)
+        .then(response => {
+          dispatch({
+            type: 'SET_REVIEWS',
+            payload: response.data
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching reviews:', error);
+        });
+  }, [dispatch, sport_type]);
+
+  const handleEdit = (reviewId) => {
+    axios.put(`/api/reviews/new`)
+      .then(response => {
+        console.log('handleEdit works', response.data)
+        dispatch({
+          type: 'UPDATE_REVIEW',
+          payload: response.data
+        })
       })
       .catch(error => {
-        console.error('Error fetching associated  teams:', error);
+        console.error('Error updating review:', error);
       });
-  }, [dispatch, team_name]);
+  };
+
+  const handleDelete = (reviewId) => {
+    axios.delete(`/api/reviews/${reviewId}`)
+      .then(response => {
+        console.log('DELETE review works!', response.data)
+        dispatch({
+          type: 'DELETE_REVIEW',
+          payload: reviewId
+        });
+      })
+      .catch(error => {
+        console.error('Error deleting review:', error);
+      });
+  };
 
   if (!teamDetails) {
     return <div>Loading team details...</div>;
@@ -34,11 +73,26 @@ function TeamDetails() {
       <p>Contact Info: {teamDetails.contact_info}</p>
       <p>Current Rating: {teamDetails.current_rating}</p>
       
-      <Link to={`/${team_name}/reviews`} >
-      <button>Leave a Review</button>
-      </Link>
+      <h3>Reviews</h3>
+      {reviews && reviews.length > 0 ? (
+        <ul>
+          {reviews.map(review => (
+            <li key={review.id}>
+              <p>User: {review.user_id}</p>
+              <p>Rating: {review.rating}</p>
+              <p>Comment: {review.comments}</p>
+              <button onClick={() => handleEdit(review.id)}>🖋️ Edit</button>
+              <button onClick={() => handleDelete(review.id)}>🗑️ Delete</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No reviews found.</p>
+      )}
+
+      <ReviewForm team_name={team_name} />
     </div>
   );
 }
 
-export default TeamDetails;
+export default TeamDetails; 

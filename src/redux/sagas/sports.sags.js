@@ -37,9 +37,7 @@ function* fetchTeamSports(action) {
 }
 function* fetchSportDetails(action){
   try{
-    const sport_type = action.payload;
-    console.log('Sport type:', sport_type)
-    const response = yield axios.get(`/api/sports/${action.payload}`);
+    const response = yield axios.get(`/api/sports/${sport_type}`, action.payload);
     yield put ({
       type: 'SET_SPORT_DETAILS',
       payload: response.data

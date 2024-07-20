@@ -1,35 +1,58 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addReview, updateReview } from "../../redux/sagas/reviews.saga";
+import axios from "axios";
 
-function ReviewForm({}) {
-  const [reviewData, setReviewData] = useState(
-    initialReview || { reviewer_name: '', 
-    review_text: '', rating: 1 });
+function ReviewForm({ team_name }) {
+  const dispatch = useDispatch();
+  const [reviewData, setReviewData] = useState({
+    date: new Date().toISOString(),
+    user_id: 1, // Assuming you have a way to determine the user id
+    team_id: 1, // You may need to adjust how you get the team_id
+    rating: 1,
+    comments: ""
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (initialReview) {
-      dispatch(updateReview(reviewData));
-    } else {
-      dispatch(addReview(reviewData));
-    }
-    // Clear form 
-    setReviewData({ 
-      reviewer_name: '', review_text: '', rating: 1 });
+    axios.post(`/api/reviews/${team_name}`, reviewData)
+      .then(response => {
+        dispatch({
+          type: 'ADD_REVIEW',
+          payload: response.data
+        });
+        setReviewData({
+          date: new Date().toISOString(),
+          user_id: 1,
+          team_id: 1,
+          rating: 1,
+          comments: ""
+        });
+      })
+      .catch(error => {
+        console.error('Error adding review:', error);
+      });
   };
+
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Reviewer Name" value={reviewData.reviewer_name} onChange={(e) => setReviewData({ ...reviewData, reviewer_name: e.target.value })} />
-      <textarea placeholder="Review Text" value={reviewData.review_text} onChange={(e) => setReviewData({ ...reviewData, review_text: e.target.value })}></textarea>
-      <select value={reviewData.rating} onChange={(e) => setReviewData({ ...reviewData, rating: Number(e.target.value) })}>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
+      <p>Username: {/* Display username here */}</p>
+      <p>Team: {team_name}</p>
+      <textarea
+        placeholder="Comments"
+        value={reviewData.comments}
+        onChange={(event) => setReviewData({ ...reviewData, comments: event.target.value })}
+      ></textarea>
+      <select
+        value={reviewData.rating}
+        onChange={(event) => setReviewData({ ...reviewData, rating: Number(event.target.value) })}
+      >
+        <option value="1">⭐️</option>
+        <option value="2">⭐️⭐️</option>
+        <option value="3">⭐️⭐️⭐️</option>
+        <option value="4">⭐️⭐️⭐️⭐️</option>
+        <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
       </select>
-      <button type="submit">{initialReview ? 'Update Review' : 'Add Review'}</button>
+      <button type="submit">Add Review</button>
     </form>
   );
 }

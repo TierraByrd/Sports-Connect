@@ -7,7 +7,6 @@ router.get('/', (req, res) => {
   const queryText = `
     SELECT * 
     FROM "teams"
-    ORDER BY "id" ASC
   `;
   pool.query(queryText)
     .then((result) => {
@@ -20,15 +19,15 @@ router.get('/', (req, res) => {
     });
 });
  //GET  specific teams
- router.get('/:team_name', (req, res) => {
-  const {team_name} = req.params;
+ router.get('/:sport_name', (req, res) => {
+  const sport_name = req.params.sport_name;
   const queryText = `
-  SELECT * 
-  FROM "teams"
-  WHERE "team_name" = $1
-  ORDER By "id" ASC
+ SELECT teams.*
+  FROM teams
+  JOIN sports ON teams.sport_id = sports.id
+  WHERE sports.sport_name = $1
   `;
-  const queryValues = [team_name];
+  const queryValues = [sport_name];
   
   pool.query(queryText, queryValues)
   .then(result =>{

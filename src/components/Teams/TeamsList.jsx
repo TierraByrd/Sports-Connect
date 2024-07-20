@@ -6,12 +6,12 @@ import axios from "axios";
 
 function TeamsList() {
   const dispatch = useDispatch();
-  const {sport_name } = useParams();
+  const {sport_type, sport_name} = useParams();
   const teamsList = useSelector(state => state.teamReducer.teams);
 
   useEffect(() => {
     // Fetch teams using axios
-    axios.get('/api/teams')
+    axios.get(`/api/teams/${sport_name}`)
       .then((response) => {
         dispatch({ 
           type: "SET_TEAMS", 
@@ -21,7 +21,7 @@ function TeamsList() {
       .catch(error => {
         console.error('Error fetching teams:', error);
       });
-  }, [dispatch, sport_name]); 
+  }, [dispatch, sport_type, sport_name]); 
 
   if (!teamsList) {
     return <div>Loading Teams...</div>;
@@ -37,7 +37,7 @@ function TeamsList() {
       <ul>
         {teamsList.map((team) => (
           <li key={team.team_name}>
-              <Link to={`/teams/${team.team_name}`}>{team.team_name}</Link>
+              <Link to={`/${team.team_name}`}>{team.team_name}</Link>
           </li>
         ))}
       </ul>
