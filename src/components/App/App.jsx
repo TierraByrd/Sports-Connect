@@ -109,7 +109,7 @@ path="/sports/team"
     
           <ProtectedRoute
             exact
-            path="/reviews/:team_name"
+            path="/reviews/:teamId"
             >
               <ReviewForm />
 
@@ -117,7 +117,7 @@ path="/sports/team"
 
               <ProtectedRoute
             exact
-            path="reviews"
+            path="/reviews/:team_name"
             >
               <ReviewList />
           </ProtectedRoute>

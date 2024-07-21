@@ -40,11 +40,19 @@ router.get('/', (req, res) => {
   })
   // POST new review
   router.post('/', (req, res) => {
-    const { date, team_id, rating, comments} = req.body;
-    const queryText = 'INSERT INTO reviews (date, team_id, rating, reviews, user_id) VALUES ($1, $2, $3, $4, $5)';
-    pool.query(queryText, [date, team_id, rating, reviews, user_id])
-      .then(() => res.sendStatus(201))
-      .catch((error) => {
+    const {rating, comments} = req.body;
+    let queryText = `
+    INSERT INTO 
+    "reviews" (rating, comments) 
+    VALUES ($1, $2)
+    `;
+    const queryValues = [rating, comments];
+    pool.query(queryText, queryValues)
+      .then((result) => {
+        console.log('New Review:', result.rows)
+        res.sendStatus(201)
+      })
+      .catch(error => {
         console.error('Error adding comment:', error);
         res.sendStatus(500);
       });
@@ -54,7 +62,7 @@ router.get('/', (req, res) => {
   router.put('/:id', (req, res) => {
     const reviewId = req.params.id;
     const { date, team_id, rating, comments } = req.body;
-    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4 WHERE id = $5';
+    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4 WHERE teamid = $5';
     pool.query(queryText, [date, team_id, rating, comments, reviewId])
       .then(() => res.sendStatus(200))
       .catch((error) => {

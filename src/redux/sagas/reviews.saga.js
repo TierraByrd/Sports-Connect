@@ -18,7 +18,7 @@ function* fetchReviews(action) {
 // Worker saga: add review
 function* addReview(action) {
   try {
-    const response = yield axios.post(`/api/reviews/${team_name}`);
+    const response = yield axios.post(`/api/reviews/${team_name}`, reviewData);
     console.log('Add review works!', action.payload)
     yield put({ 
       type: 'ADD_REVIEW',
@@ -32,7 +32,7 @@ function* addReview(action) {
 // Worker saga: update a review
 function* updateReview(action) {
   try {
-    const response = yield axios.put(`/api/reviews/${team_name}`);
+    const response = yield axios.put(`/api/reviews/${reviewId}`);
     console.log('Update Saga review works!', action.payload)
     yield put({ 
       type: 'UPDATE_REVIEW', 
@@ -46,7 +46,7 @@ function* updateReview(action) {
 // Worker saga: delete review
 function* deleteReview(action) {
   try {
-    const response = yield axios.delete(`/api/reviews/${team_name}`);
+    const response = yield axios.delete(`/api/reviews/${reviewId}`);
     console.log('Delete in Saga works!', action.payload)
     yield put({
       type: 'DELETE_REVIEW',
@@ -58,7 +58,7 @@ function* deleteReview(action) {
 }
 
 // Root saga for reviews operations
- function* reviewsSaga() {
+function* reviewsSaga() {
   yield takeLatest('FETCH_REVIEWS', fetchReviews);
   yield takeLatest('ADD_REVIEW', addReview);
   yield takeLatest('UPDATE_REVIEW', updateReview);
