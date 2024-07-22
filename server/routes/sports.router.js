@@ -7,14 +7,13 @@ router.get('/', (req, res) => {
   const queryText = `
     SELECT * 
     FROM "sports"
-    ORDER BY "id" ASC
   `;
   pool.query(queryText)
     .then((result) => {
       console.log('All sports GET route works:', result.rows);
-      res.send(result.rows);
+      res.send(201);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error in GET for sports: ', error);
       res.sendStatus(500);
     });
@@ -23,7 +22,7 @@ router.get('/', (req, res) => {
 // GET all sports of a specific type (team or single)
 router.get('/:sport_type', (req, res) => {
   const { sport_type } = req.params;
-  const queryText = `
+  let queryText = `
     SELECT * FROM "sports"
     WHERE "sport_type" = $1
     ORDER BY "id" ASC
