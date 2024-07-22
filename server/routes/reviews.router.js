@@ -18,10 +18,10 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
       });
   });
-  //GET reviews for specific teams
+  //GET reviews for specific team
   router.get('/:team_name', (req, res) => {
     const team_name  = req.params.team_name;
-    const queryText = `
+    let queryText = `
     SELECT reviews.*
     FROM reviews
     JOIN teams ON reviews.team_id = teams.id
@@ -40,13 +40,13 @@ router.get('/', (req, res) => {
   })
   // POST new review
   router.post('/', (req, res) => {
-    const {rating, comments} = req.body;
+    const {rating, comments, team_id} = req.body;
     let queryText = `
     INSERT INTO 
-    "reviews" (rating, comments) 
-    VALUES ($1, $2)
+    "reviews" (rating, comments, team_id) 
+    VALUES ($1, $2, $3)
     `;
-    const queryValues = [rating, comments];
+    const queryValues = [rating, comments, team_id];
     pool.query(queryText, queryValues)
       .then((result) => {
         console.log('New Review:', result.rows)

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 
 
-function ReviewForm({ teamId}) {
+function ReviewForm() {
   const dispatch = useDispatch();
   const [rating, setRating] = useState(1);
   const [comments, setComments] = useState('');
@@ -11,9 +11,9 @@ function ReviewForm({ teamId}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newReview = { team_id: teamId, rating, comments};
+    const newReview = {rating, comments};
 
-    axios.post(`/api/reviews/${teamId}`, newReview)
+    axios.post(`/api/reviews/$`, newReview)
       .then((response) => {
         dispatch({
           type: 'ADD_REVIEW',

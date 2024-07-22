@@ -15,6 +15,11 @@ const sportReducer = (state = initialState, action) => {
         ...state,
         details: action.payload, 
       };
+    case 'SET_SPORTS':
+      return {
+        ...state,
+        details: action.payload,
+      }
       case 'SET_SPORT_DETAILS':
       return {
         ...state,

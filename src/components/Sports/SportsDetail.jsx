@@ -51,8 +51,6 @@ function SportDetails() {
       <h3>
         <Link to={`/teams/${sport.sport_name}`}>Current Teams</Link>
       </h3>
-
-      {/* Render teams here if needed */}
     </div>
   );
 }

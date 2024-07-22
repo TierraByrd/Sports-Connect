@@ -4,6 +4,7 @@ import { put, takeLatest } from "redux-saga/effects";
 // Worker saga: fetch teams
 function* fetchTeams(action) {
   try {
+    const {sport_name} = action.payload;
     const response = yield axios.get(`/api/teams/${team_name}`);
     console.log('fetchTeams saga works!', action.payload) 
     yield put({ 

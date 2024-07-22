@@ -76,7 +76,7 @@ function TeamDetails() {
   return (
     <div>
       <h2>Team Details for {team_name}</h2>
-      <p>Team Name: {teamDetails.team_name}</p>
+      <p>Team Name: {team_name}</p>
       <p>Coach: {teamDetails.coach_name}</p>
       <p>Contact Info: {teamDetails.contact_info}</p>
       <p>Current Rating: {teamDetails.current_rating}</p>
@@ -86,8 +86,7 @@ function TeamDetails() {
         <ul>
           {reviews.map(review => (
             <li key={review.id}>
-              <p>User: {review.user_id}</p>
-              <p>Team:{review.team_name}</p>
+              
               <p>Rating: {review.rating}</p>
               <p>Comment: {review.comments}</p>
               <button onClick={() => handleEdit(review.id)}>🖋️ Edit</button>
