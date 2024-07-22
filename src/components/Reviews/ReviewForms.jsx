@@ -1,36 +1,21 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-
 
 function ReviewForm() {
-  const dispatch = useDispatch();
-  const [rating, setRating] = useState(1);
-  const [comments, setComments] = useState('');
+  const [rating, setRating] = useState("");
+  const [comments, setComments] = useState("");
 
 
-  const handleSubmit = (event) => {
+  const addReview = (event) => {
     event.preventDefault();
-    const newReview = {rating, comments};
-
-    axios.post(`/api/reviews/$`, newReview)
-      .then((response) => {
-        dispatch({
-          type: 'ADD_REVIEW',
-          payload: response.data
-        });
-        // Reset form fields after successful submission
-        setRating(1);
-        setComments('');
-  
-      })
-      .catch(error => {
-        console.error('Error adding review:', error);
-      });
-  };
+   
+    addReview({rating: rating, comments: comments})
+    setRating("");
+    setComments("");
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <section>
+    <form onSubmit={addReview}>
       <label>
         Rating:
         <input 
@@ -53,6 +38,7 @@ function ReviewForm() {
       <br />
       <button type="submit">Submit Review</button>
     </form>
+    </section>
   );
 }
 
