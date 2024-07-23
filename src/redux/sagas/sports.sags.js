@@ -35,9 +35,10 @@ function* fetchTeamSports(action) {
     console.error('Error fetching team sports', error)
   }
 }
+
 function* fetchSportDetails(action){
   try{
-    const response = yield axios.get(`/api/sports/${sport_type}`, action.payload);
+    const response = yield axios.get(`/api/${sport_name}`, action.payload);
     yield put ({
       type: 'SET_SPORT_DETAILS',
       payload: response.data

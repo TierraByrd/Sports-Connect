@@ -3,24 +3,56 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 // GET all reviews
-
 router.get('/', (req, res) => {
-    const queryText = 'SELECT * FROM reviews';
+    const queryText = `
+    SELECT * 
+    FROM reviews`
+    ;
     pool.query(queryText)
-      .then((result) => res.send(result.rows))
+      .then(result => {
+        console.log('Reviews GET route works!', result.rows);
+        res.send(result.rows)
+  })
       .catch((error) => {
-        console.error('Error getting comments:', error);
+        console.error('Error getting reviews', error);
         res.sendStatus(500);
       });
   });
-  
+  //GET reviews for specific team
+  router.get('/:team_name', (req, res) => {
+    const team_name  = req.params.team_name;
+    let queryText = `
+    SELECT reviews.*
+    FROM reviews
+    JOIN teams ON reviews.team_id = teams.id
+    WHERE teams.team_name = $1
+    `;
+    const queryValues = [team_name];
+    pool.query(queryText, queryValues)
+    .then(result => {
+      console.log('GET specific reviews work', result.rows)
+      res.send(result.rows);
+    })
+    .catch(error =>{
+      console.error("Error Get specific reviews", error)
+      res.sendStatus(500);
+    })
+  })
   // POST new review
   router.post('/', (req, res) => {
-    const { date, team_id, rating, reviews, user_id } = req.body;
-    const queryText = 'INSERT INTO reviews (date, team_id, rating, reviews, user_id) VALUES ($1, $2, $3, $4, $5)';
-    pool.query(queryText, [date, team_id, rating, reviews, user_id])
-      .then(() => res.sendStatus(201))
-      .catch((error) => {
+    const {rating, comments, team_id} = req.body;
+    let queryText = `
+    INSERT INTO 
+    "reviews" (rating, comments, team_id) 
+    VALUES ($1, $2, $3)
+    `;
+    const queryValues = [rating, comments, team_id];
+    pool.query(queryText, queryValues)
+      .then((result) => {
+        console.log('New Review:', result.rows)
+        res.sendStatus(201)
+      })
+      .catch(error => {
         console.error('Error adding comment:', error);
         res.sendStatus(500);
       });
@@ -29,9 +61,9 @@ router.get('/', (req, res) => {
   // PUT update review by ID
   router.put('/:id', (req, res) => {
     const reviewId = req.params.id;
-    const { date, team_id, rating, reviewws, user_id } = req.body;
-    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4, user_id = $5 WHERE id = $6';
-    pool.query(queryText, [date, team_id, rating, s, user_id, reviewId])
+    const { date, team_id, rating, comments } = req.body;
+    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4 WHERE teamid = $5';
+    pool.query(queryText, [date, team_id, rating, comments, reviewId])
       .then(() => res.sendStatus(200))
       .catch((error) => {
         console.error('Error updating review:', error);
