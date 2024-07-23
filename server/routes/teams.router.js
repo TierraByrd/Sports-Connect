@@ -9,16 +9,16 @@ router.get('/', (req, res) => {
     FROM "teams"
   `;
   pool.query(queryText)
-    .then((result) => {
-      console.log('Team GET route works!', result.rows);
-      res.send(result.rows);
+    .then((results) => {
+      console.log('Team GET route works!', results.rows);
+      res.send(results.rows);
     })
     .catch(error => {
       console.error('Error in GET for teams ', error);
       res.sendStatus(500);
     });
 });
- //GET  specific teams
+ //GET  specific teams for a sport
  router.get('/:sport_name', (req, res) => {
   const sport_name = req.params.sport_name;
   const queryText = `
@@ -30,13 +30,31 @@ router.get('/', (req, res) => {
   const queryValues = [sport_name];
   
   pool.query(queryText, queryValues)
-  .then(result =>{
-    console.log('GET specific team works', result.rows);
-    res.send(result.rows);
+  .then((results) =>{
+    console.log('GET specific teams works', results.rows);
+    res.send(results.rows);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('Error GET specific teams', error)
     res.sendStatus(500);
   })
+ })
+ //GET detail for a team
+ router.get('/:team_name', (req,res) => {
+const team_name = req.params.team_name;
+const queryText = `
+SELECT *
+FROM teams
+WHERE team_name = $1
+`;
+const queryValues = [team_name];
+pool.query(queryText, queryValues)
+.then((results) => {
+  res.send(results.rows)
+})
+.catch((error) => {
+  console.error('Error GET details for team', error)
+  res.sendStatus(500);
+})
  })
 module.exports = router;

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch} from "react-redux";
 
 function ReviewForm() {
-  const [rating, setRating] = useState("");
-  const [comments, setComments] = useState("");
+  const [rating, setRating] = useState('');
+  const [comments, setComments] = useState('');
+  const dispatch = useDispatch()
 
-  const handleSubmit = (event) => {
+  const addReview = (event) => {
     event.preventDefault();
 
     // Here we can perform any actions needed with rating and comments
@@ -12,13 +14,18 @@ function ReviewForm() {
     console.log("Comments:", comments);
 
     // Reset the form fields after submission
-    setRating("");
-    setComments("");
+    dispatch({
+      type: 'ADD_REVIEW',
+      payload: {
+        rating: rating,
+        comments: comments,
+      }
+    })
   };
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={addReview}>
         <label>
           Rating:
           <input

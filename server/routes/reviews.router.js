@@ -40,13 +40,13 @@ router.get('/', (req, res) => {
   })
   // POST new review
   router.post('/', (req, res) => {
-    const {rating, comments, team_id} = req.body;
+    const {rating, comments} = req.body;
     let queryText = `
     INSERT INTO 
-    "reviews" (rating, comments, team_id) 
-    VALUES ($1, $2, $3)
+    "reviews" (rating, comments) 
+    VALUES ($1, $2)
     `;
-    const queryValues = [rating, comments, team_id];
+    const queryValues = [rating, comments];
     pool.query(queryText, queryValues)
       .then((result) => {
         console.log('New Review:', result.rows)

@@ -12,10 +12,9 @@ const reviewReducer = (state = initialState, action) => {
     case 'ADD_REVIEW':
       return {
         ...state,
-        reviews: [...state.reviews, action.payload]  // Add new review to existing array
+        reviews: [...state.reviews, action.payload] 
       };
     case 'UPDATE_REVIEW':
-      // Assuming action.payload contains the updated review object
       return {
         ...state,
         reviews: state.reviews.map(review =>
@@ -23,7 +22,6 @@ const reviewReducer = (state = initialState, action) => {
         )
       };
     case 'DELETE_REVIEW':
-      // Assuming action.payload contains the id of the review to be deleted
       return {
         ...state,
         reviews: state.reviews.filter(review => review.id !== action.payload)
