@@ -38,6 +38,7 @@ router.get('/', (req, res) => {
       res.sendStatus(500);
     })
   })
+  
   // POST new review
   router.post('/', (req, res) => {
     const {rating, comments} = req.body;
@@ -61,8 +62,8 @@ router.get('/', (req, res) => {
   // PUT update review by ID
   router.put('/:id', (req, res) => {
     const reviewId = req.params.id;
-    const { date, team_id, rating, comments } = req.body;
-    const queryText = 'UPDATE reviews SET date = $1, team_id = $2, rating = $3, comments = $4 WHERE teamid = $5';
+    const {team_id, rating, comments } = req.body;
+    const queryText = 'UPDATE reviews SET rating = $1, comments = $2 WHERE team_id = $3';
     pool.query(queryText, [date, team_id, rating, comments, reviewId])
       .then(() => res.sendStatus(200))
       .catch((error) => {
@@ -73,10 +74,12 @@ router.get('/', (req, res) => {
   
   // DELETE review by ID
   router.delete('/:id', (req, res) => {
-    const reviewId = req.params.id;
+    const {reviewId} = req.params.id;
     const queryText = 'DELETE FROM reviews WHERE id = $1';
     pool.query(queryText, [reviewId])
-      .then(() => res.sendStatus(204))
+      .then((result) => {
+        res.send(result.rows)
+      })
       .catch((error) => {
         console.error('Error deleting review:', error);
         res.sendStatus(500);

@@ -3,8 +3,9 @@ import { put, takeLatest } from "redux-saga/effects";
 
 // Worker saga: fetch Reviews
 function* fetchReviews(action) {
+  console.log("Action payload for fetchReviews:", action.payload)
   try {
-    const response = yield axios.get(`/api/reviews`);
+    const response = yield axios.get(`/api/reviews/${action.payload.team_name}`);
     console.log('fetchReviews saga works!', action.payload);
     yield put({ 
       type: 'SET_REVIEWS', 
@@ -18,12 +19,11 @@ function* fetchReviews(action) {
 // Worker saga: add review
 function* addReview(action) {
   try {
-    const { reviewData } = action.payload; 
-    const response = yield axios.post(`/api/reviews`, reviewData);
-    console.log('Add review works!', action.payload)
+    yield axios.post(`/api/reviews`);
+    console.log('addReview action.payload!', action.payload)
     yield put({ 
-      type: 'ADD_REVIEW',
-      payload: response.data 
+      type: 'FETCH_REVIEWS',
+      payload: action.payload
     });
   } catch (error) {
     console.error('Error (Saga) adding review:', error);
@@ -48,7 +48,7 @@ function* updateReview(action) {
 // Worker saga: delete review
 function* deleteReview(action) {
   try {
-    const { reviewId } = action.payload; // Assuming you need reviewId here
+    const { reviewId } = action.payload; 
     const response = yield axios.delete(`/api/reviews/${reviewId}`);
     console.log('Delete in Saga works!', action.payload)
     yield put({

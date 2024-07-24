@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch} from "react-redux";
 
-function ReviewForm() {
+function ReviewForm({team_name}) {
   const [rating, setRating] = useState('');
   const [comments, setComments] = useState('');
   const dispatch = useDispatch()
@@ -17,6 +17,7 @@ function ReviewForm() {
     dispatch({
       type: 'ADD_REVIEW',
       payload: {
+        team_name: team_name,
         rating: rating,
         comments: comments,
       }

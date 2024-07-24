@@ -5,7 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 function TeamDetails() {
-  const {team_name } = useParams();
+  const { team_name } = useParams();
   const dispatch = useDispatch();
   const teamDetails = useSelector(state => state.teamReducer.teamDetails);
   const reviews = useSelector(state => state.reviewReducer.reviews);
@@ -38,22 +38,22 @@ function TeamDetails() {
 
   const handleEdit = (reviewId) => {
     axios.put(`/api/reviews/${reviewId}`, editReviewData)
-    .then((response) => {
-      console.log('handleEdit works', response.data);
-      dispatch({
-        type: 'UPDATE_REVIEW',
-        payload: response.data
+      .then((response) => {
+        console.log('handleEdit works', response.data);
+        dispatch({
+          type: 'UPDATE_REVIEW',
+          payload: response.data
+        });
+        // Clear edit form data
+        setEditReviewData({
+          rating: 1,
+          comments: ""
+        });
+      })
+      .catch(error => {
+        console.error('Error updating review:', error);
       });
-      // Clear edit form data
-      setEditReviewData({
-        rating: 1,
-        comments: ""
-      });
-    })
-    .catch(error => {
-      console.error('Error updating review:', error);
-    });
-};
+  };
 
   const handleDelete = (reviewId) => {
     axios.delete(`/api/reviews/${reviewId}`)
@@ -66,6 +66,23 @@ function TeamDetails() {
       })
       .catch(error => {
         console.error('Error deleting review:', error);
+      });
+  };
+
+  // ! This might not be doing anything
+  const addReview = (newReviewData) => {
+    axios.post(`/api/reviews`, newReviewData)
+      .then((response) => {
+        console.log('Add review works!', response.data);
+
+        console.log("team_name in TeamDetils addReview:", team_name)
+        dispatch({
+          type: 'ADD_REVIEW',
+          payload: {...response.data, team_name}
+        });
+      })
+      .catch(error => {
+        console.error('Error adding review:', error);
       });
   };
 
@@ -86,7 +103,6 @@ function TeamDetails() {
         <ul>
           {reviews.map(review => (
             <li key={review.id}>
-              
               <p>Rating: {review.rating}</p>
               <p>Comment: {review.comments}</p>
               <button onClick={() => handleEdit(review.id)}>🖋️ Edit</button>
@@ -97,12 +113,15 @@ function TeamDetails() {
       ) : (
         <p>No reviews found.</p>
       )}
-          <ReviewForm team_name={team_name} 
-          editReviewData={editReviewData} 
-          setEditReviewData={setEditReviewData}
-           />
+
+      <ReviewForm
+        team_name={team_name}
+        addReview={addReview} // Pass addReview function to ReviewForm
+        editReviewData={editReviewData}
+        setEditReviewData={setEditReviewData}
+      />
     </div>
   );
 }
 
-export default TeamDetails; 
+export default TeamDetails;

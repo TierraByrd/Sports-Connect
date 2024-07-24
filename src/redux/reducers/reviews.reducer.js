@@ -12,7 +12,7 @@ const reviewReducer = (state = initialState, action) => {
     case 'ADD_REVIEW':
       return {
         ...state,
-        reviews: [...state.reviews, action.payload] 
+        reviews: [...state.reviews, action.payload]
       };
     case 'UPDATE_REVIEW':
       return {

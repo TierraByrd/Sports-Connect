@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
   })
  })
  //GET detail for a team
- router.get('/:team_name', (req,res) => {
+ router.get('/:sport_name', (req,res) => {
 const team_name = req.params.team_name;
 const queryText = `
 SELECT *
