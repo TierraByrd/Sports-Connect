@@ -42,10 +42,12 @@ router.get('/', (req, res) => {
   // POST new review
   router.post('/', (req, res) => {
     const {rating, comments} = req.body;
-    let queryText = `
-    INSERT INTO 
-    "reviews" (rating, comments) 
-    VALUES ($1, $2)
+    const queryText = `
+  INSERT INTO reviews 
+  (rating, comments, team_id)
+   VALUES ($1, $2, 
+   (SELECT id FROM teams WHERE team_name = $3)
+   )
     `;
     const queryValues = [rating, comments];
     pool.query(queryText, queryValues)
@@ -61,24 +63,27 @@ router.get('/', (req, res) => {
   
   // PUT update review by ID
   router.put('/:id', (req, res) => {
-    const reviewId = req.params.id;
+    const {reviewId} = req.params.id;
     const {team_id, rating, comments } = req.body;
-    const queryText = 'UPDATE reviews SET rating = $1, comments = $2 WHERE team_id = $3';
-    pool.query(queryText, [date, team_id, rating, comments, reviewId])
-      .then(() => res.sendStatus(200))
-      .catch((error) => {
-        console.error('Error updating review:', error);
-        res.sendStatus(500);
-      });
-  });
+    const queryText = 'UPDATE reviews SET team_id = $1, rating = $2, comments = $3 WHERE id = $4';
+    pool.query(queryText, [rating, comments, team_id, reviewId])
+    .then((results) => {
+      res.send(results.rows)
+    })
+    .catch((error) => {
+      console.error('Error updating review:', error);
+      res.sendStatus(500);
+    });
+});
+
   
   // DELETE review by ID
   router.delete('/:id', (req, res) => {
     const {reviewId} = req.params.id;
     const queryText = 'DELETE FROM reviews WHERE id = $1';
     pool.query(queryText, [reviewId])
-      .then((result) => {
-        res.send(result.rows)
+      .then((results) => {
+        res.send(results.rows)
       })
       .catch((error) => {
         console.error('Error deleting review:', error);

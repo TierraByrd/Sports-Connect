@@ -13,7 +13,7 @@ function TeamDetails() {
   const [editReviewData, setEditReviewData] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/teams/${team_name}`)
+    axios.get(`/api/teams`)
       .then((response) => {
         dispatch({
           type: "SET_TEAM_DETAILS",
@@ -37,12 +37,12 @@ function TeamDetails() {
   }, [dispatch, team_name]);
 
   const handleEdit = (reviewId) => {
-    axios.put(`/api/reviews/${reviewId}`, editReviewData)
+    axios.put(`/api/reviews/${reviewId}`)
       .then((response) => {
         console.log('handleEdit works', response.data);
         dispatch({
           type: 'UPDATE_REVIEW',
-          payload: response.data
+          payload: reviewId
         });
         // Clear edit form data
         setEditReviewData({
@@ -70,18 +70,21 @@ function TeamDetails() {
   };
 
   // ! This might not be doing anything
-  const addReview = (newReviewData) => {
+  const addReview = (rating,comments) => {
+    const newReviewData = {
+      rating, 
+      comments,
+      team_name
+    }
     axios.post(`/api/reviews`, newReviewData)
       .then((response) => {
         console.log('Add review works!', response.data);
-
-        console.log("team_name in TeamDetils addReview:", team_name)
         dispatch({
           type: 'ADD_REVIEW',
-          payload: {...response.data, team_name}
-        });
+          payload: response.data
+        })
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error adding review:', error);
       });
   };
@@ -116,7 +119,7 @@ function TeamDetails() {
 
       <ReviewForm
         team_name={team_name}
-        addReview={addReview} // Pass addReview function to ReviewForm
+        addReview={addReview} 
         editReviewData={editReviewData}
         setEditReviewData={setEditReviewData}
       />
