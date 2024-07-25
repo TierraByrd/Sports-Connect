@@ -56,17 +56,10 @@ function TeamDetails() {
   };
 
   const handleDelete = (reviewId) => {
-    axios.delete(`/api/reviews/${reviewId}`)
-      .then((response) => {
-        console.log('DELETE review works!', response.data);
         dispatch({
           type: 'DELETE_REVIEW',
           payload: reviewId
         });
-      })
-      .catch(error => {
-        console.error('Error deleting review:', error);
-      });
   };
 
   // ! This might not be doing anything

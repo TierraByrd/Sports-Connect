@@ -35,11 +35,11 @@ function* addReview(action) {
 function* updateReview(action) {
   try {
     const { reviewId } = action.payload; 
-    const response = yield axios.put(`/api/reviews/${reviewId}`);
+   yield axios.put(`/api/reviews/${reviewId}`);
     console.log('Update Saga review works!', action.payload)
     yield put({ 
       type: 'UPDATE_REVIEW', 
-      payload: response.data 
+      payload: action.payload
     });
   } catch (error) {
     console.error('Error Saga updating review:', error);
@@ -48,14 +48,10 @@ function* updateReview(action) {
 
 // Worker saga: delete review
 function* deleteReview(action) {
-  try {
+   try {
     const { reviewId } = action.payload; 
-    const response = yield axios.delete(`/api/reviews/${reviewId}`);
-    console.log('Delete in Saga works!', action.payload)
-    yield put({
-      type: 'DELETE_REVIEW',
-      payload: response.data
-    });
+    yield axios.delete(`/api/reviews/${reviewId}`);
+     console.log('Delete in Saga works!', action.payload)
   } catch (error) {
     console.error('Error deleting review:', error);
   }
