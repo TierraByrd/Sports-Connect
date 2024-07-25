@@ -5,11 +5,12 @@ import { put, takeLatest } from "redux-saga/effects";
 function* fetchReviews(action) {
   console.log("Action payload for fetchReviews:", action.payload)
   try {
-    const response = yield axios.get(`/api/reviews/${action.pateam_name}`);
+    const {team_name} = action.payload;
+   yield axios.get(`/api/reviews/${team_name}`);
     console.log('fetchReviews saga works!', action.payload);
     yield put({ 
       type: 'SET_REVIEWS', 
-      payload: response.data 
+      payload: action.payload 
     });
   } catch (error) {
     console.error('Error fetching reviews:', error);
@@ -22,8 +23,8 @@ function* addReview(action) {
     yield axios.post(`/api/reviews`);
     console.log('addReview action.payload!', action.payload)
     yield put({ 
-      type: 'FETCH_REVIEWS',
-     
+      type: 'ADD_REVIEWS',
+     payload: action.payload
     });
   } catch (error) {
     console.error('Error (Saga) adding review:', error);

@@ -29,11 +29,11 @@ router.get('/', (req, res) => {
     `;
     const queryValues = [team_name];
     pool.query(queryText, queryValues)
-    .then(result => {
-      console.log('GET specific reviews work', result.rows)
-      res.send(result.rows);
+    .then((results) => {
+      console.log('GET specific reviews work', results.rows)
+      res.send(results.rows);
     })
-    .catch(error =>{
+    .catch((error) =>{
       console.error("Error Get specific reviews", error)
       res.sendStatus(500);
     })
@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
   
   // POST new review
   router.post('/', (req, res) => {
-    const {rating, comments} = req.body;
+    const {rating, comments, team_name} = req.body;
     const queryText = `
   INSERT INTO reviews 
   (rating, comments, team_id)
@@ -49,13 +49,13 @@ router.get('/', (req, res) => {
    (SELECT id FROM teams WHERE team_name = $3)
    )
     `;
-    const queryValues = [rating, comments];
+    const queryValues = [rating, comments, team_name];
     pool.query(queryText, queryValues)
-      .then((result) => {
-        console.log('New Review:', result.rows)
+      .then((results) => {
+        console.log('New Review:', results.rows)
         res.sendStatus(201)
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error adding comment:', error);
         res.sendStatus(500);
       });
