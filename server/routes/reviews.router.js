@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
     pool.query(queryText, queryValues)
       .then((results) => {
         console.log('New Review:', results.rows)
-        res.sendStatus(201)
+        res.send(results.rows[0])
       })
       .catch((error) => {
         console.error('Error adding comment:', error);
