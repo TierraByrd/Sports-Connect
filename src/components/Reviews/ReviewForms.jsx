@@ -21,7 +21,7 @@ import React, { useState, useEffect } from "react";
     const handleSubmit = (event) => {
       event.preventDefault();
       const review = {
-        // Use existing ID if editing
+        id: editReviewData ? editReviewData.id : Date.now(), // Use existing ID if editing
         team_name: team_name,
         rating: rating,
         comments: comments,

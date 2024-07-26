@@ -52,7 +52,7 @@ function TeamDetails() {
 
   // Add or update Review
   const addOrUpdateReview = (review) => {
-    if (review.id) {
+    if (review.id && review.id !== Date.now()) {
       // Update existing review
       dispatch({
         type: 'UPDATE_REVIEW',
