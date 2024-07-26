@@ -83,7 +83,7 @@ router.get('/', (req, res) => {
     const queryText = 'DELETE FROM reviews WHERE id = $1';
     pool.query(queryText, [reviewId])
       .then((results) => {
-        res.send(results.rows)
+        res.send(results.rows[0])
       })
       .catch((error) => {
         console.error('Error deleting review:', error);

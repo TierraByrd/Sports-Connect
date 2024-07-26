@@ -50,7 +50,7 @@ function* deleteReview(action) {
    try {
     const { reviewId } = action.payload; 
     yield axios.delete(`/api/reviews/${reviewId}`);
-     console.log('Delete in Saga works!', action.payload)
+     console.log('Delete in Saga works!', reviewId )
   } catch (error) {
     console.error('Error deleting review:', error);
   }

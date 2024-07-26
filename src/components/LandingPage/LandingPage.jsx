@@ -19,10 +19,9 @@ function LandingPage() {
 
       <div className="grid">
         <div className="grid-col grid-col_8">
-          <p>
-          Discover the future of youth sports connectivity. 
-          Sports Connect is the dedicated platform for parents to explore, review, and connect with youth sports teams and clubs. 
-          </p>
+          <p>Welcome to Sports Connect, your user-friendly platform that connects 
+            parents by providing detailed information and reviews about 
+            various youth sports teams/clubs. </p>
       <h3> Explore, Connect, Review </h3>
           <p>
           Explore diverse sports options, from team sports like soccer and basketball to individual pursuits like swimming and gymnastics. 

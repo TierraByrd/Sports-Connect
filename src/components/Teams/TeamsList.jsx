@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import './TeamsList.css'; 
 
 function TeamsList() {
   const dispatch = useDispatch();
@@ -24,15 +25,15 @@ function TeamsList() {
   }, [dispatch, sport_name]);
 
   if (!teamsList) {
-    return <div>Loading Teams...</div>;
+    return <div className="loading">Loading Teams...</div>;
   }
 
   if (!Array.isArray(teamsList) || teamsList.length === 0) {
-    return <div>No teams found</div>;
+    return <div className="no-teams">No teams found</div>;
   }
 
   return (
-    <div>
+    <div className="container">
       <h2>Current Teams for {sport_name}</h2>
       <ul>
         {teamsList.map((team) => (

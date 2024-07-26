@@ -1,0 +1,25 @@
+.sports-list-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .sports-list-container h2 {
+    font-size: 2rem;
+    color: #573b2a;
+  }
+  
+  .sports-list-container a {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    color: #f9f7f7;
+    background-color: #e67d37;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sports-list-container a:hover {
+    background-color: #190d16;
+  }
