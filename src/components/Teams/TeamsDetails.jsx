@@ -21,7 +21,7 @@ function TeamDetails() {
         });
       })
       .catch(error => {
-        console.error('Error fetching associated teams:', error);
+        console.error('Error fetching team details:', error);
       });
 
     axios.get(`/api/reviews/${team_name}`)
@@ -37,49 +37,35 @@ function TeamDetails() {
   }, [dispatch, team_name]);
 
   const handleEdit = (reviewId) => {
-    axios.put(`/api/reviews/${reviewId}`)
-      .then((response) => {
-        console.log('handleEdit works', response.data);
-        dispatch({
-          type: 'UPDATE_REVIEW',
-          payload: reviewId
-        });
-        // Clear edit form data
-        setEditReviewData({
-          rating: 1,
-          comments: ""
-        });
-      })
-      .catch(error => {
-        console.error('Error updating review:', error);
-      });
-  };
-
-  const handleDelete = (reviewId) => {
-        dispatch({
-          type: 'DELETE_REVIEW',
-          payload: reviewId
-        });
-  };
-
-  // ! This might not be doing anything
-  const addReview = (rating,comments) => {
-    const newReviewData = {
-      rating, 
-      comments,
-      team_name
+    const reviewToEdit = reviews.find(review => review.id === reviewId);
+    if (reviewToEdit) {
+      setEditReviewData(reviewToEdit);
     }
-    axios.post(`/api/reviews`, newReviewData)
-      .then((response) => {
-        console.log('Add review works!', response.data);
-        dispatch({
-          type: 'ADD_REVIEW',
-          payload: response.data
-        })
-      })
-      .catch((error) => {
-        console.error('Error adding review:', error);
+  };
+  
+  const handleDelete = (reviewId) => {
+    dispatch({
+      type: 'DELETE_REVIEW',
+      payload: reviewId
+    });
+  };
+
+  // Add or update Review
+  const addOrUpdateReview = (review) => {
+    if (review.id) {
+      // Update existing review
+      dispatch({
+        type: 'UPDATE_REVIEW',
+        payload: review
       });
+    } else {
+      // Add new review
+      dispatch({
+        type: 'ADD_REVIEW',
+        payload: review
+      });
+    }
+    setEditReviewData(null); // Clear the edit form after submission
   };
 
   if (!teamDetails) {
@@ -112,7 +98,7 @@ function TeamDetails() {
 
       <ReviewForm
         team_name={team_name}
-        addReview={addReview} 
+        addOrUpdateReview={addOrUpdateReview}
         editReviewData={editReviewData}
         setEditReviewData={setEditReviewData}
       />

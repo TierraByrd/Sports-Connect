@@ -20,27 +20,26 @@ function* fetchReviews(action) {
 // Worker saga: add review
 function* addReview(action) {
   try {
-    yield axios.post(`/api/reviews`, action.payload);
-    console.log('addReview action.payload!', action.payload)
-    yield put({ 
-      type: 'ADD_REVIEWS',
-     payload: action.payload
+    const response = yield axios.post(`/api/reviews`, action.payload);
+    console.log('Add Review Saga works!', response.data);
+    yield put({
+      type: 'ADD_REVIEW_SUCCESS',
+      payload: response.data
     });
   } catch (error) {
     console.error('Error (Saga) adding review:', error);
+    yield put({
+      type: 'ADD_REVIEW_FAILURE',
+      payload: error.message
+    });
   }
 }
 
 // Worker saga: update a review
 function* updateReview(action) {
   try {
-    const { reviewId } = action.payload; 
-   yield axios.put(`/api/reviews/${reviewId}`);
+   yield axios.put(`/api/reviews/${action.payload}`);
     console.log('Update Saga review works!', action.payload)
-    yield put({ 
-      type: 'UPDATE_REVIEW', 
-      payload: action.payload
-    });
   } catch (error) {
     console.error('Error Saga updating review:', error);
   }
