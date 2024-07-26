@@ -30,8 +30,11 @@ import React, { useState, useEffect } from "react";
       console.log('Submitting review:', review);
       addOrUpdateReview(review); // Dispatch action to add or update
     
-      //Clear edit form data
-      setEditReviewData(null)
+      // Clear form fields and edit data
+  setRating(''); // Reset rating
+  setComments(''); // Reset comments
+  setEditReviewData(null); // Clear the edit form data
+  
     };
   
     return (
